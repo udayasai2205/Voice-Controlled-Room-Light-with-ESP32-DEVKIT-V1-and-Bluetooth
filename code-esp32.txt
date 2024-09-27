@@ -1,0 +1,42 @@
+//Include the library file
+#include "BluetoothSerial.h"
+
+BluetoothSerial SerialBT;
+#define relay 2 // Relay pin
+#define buzzer 4 // Buzzer pin
+
+void setup() {
+  Serial.begin(115200);
+  SerialBT.begin("uday"); //Bluetooth device name
+  Serial.println("The device started, now you can pair it with bluetooth!");
+
+  pinMode(relay, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+  digitalWrite(relay, HIGH);
+}
+void loop() {
+  if (SerialBT.available()) {
+    String value = SerialBT.readString();
+    Serial.println(value);
+    if (value == "turn on the bulb") {
+      digitalWrite(relay, LOW);
+      Serial.println("on");
+    } else if (value == "turn off the bulb") {
+      digitalWrite(relay, HIGH);
+      Serial.println("off");
+    } else {
+      digitalWrite(buzzer, HIGH);
+      delay(100);
+      digitalWrite(buzzer, LOW);
+      delay(100);
+      digitalWrite(buzzer, HIGH);
+      delay(100);
+      digitalWrite(buzzer, LOW);
+      delay(100);
+      digitalWrite(buzzer, HIGH);
+      delay(100);
+      digitalWrite(buzzer, LOW);
+      delay(100);
+    }
+  }
+}
